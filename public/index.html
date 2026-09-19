@@ -9,7 +9,14 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Inter',system-ui,sans-serif;background:#020617;color:#fff;
        min-height:100vh;padding:clamp(20px,4vw,40px)}
-  header{display:flex;align-items:center;gap:16px;margin-bottom:26px}
+  header{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+  .header-main{display:flex;align-items:center;gap:16px}
+  .actions{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+  .btn{appearance:none;border:1px solid #334155;background:#0F172A;color:#E2E8F0;padding:9px 14px;border-radius:10px;font:600 12px 'Inter',system-ui,sans-serif;cursor:pointer;transition:.2s}
+  .btn:hover{border-color:#64748B;transform:translateY(-1px)}
+  .btn.refresh{border-color:rgba(59,130,246,.45);color:#93C5FD}
+  .btn.delete{border-color:rgba(239,68,68,.45);color:#FCA5A5}
+  .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
   .logo{width:48px;height:48px;background:linear-gradient(135deg,#020617,#172554);
         border-radius:12px;display:flex;align-items:center;justify-content:center;
         font-weight:900;position:relative;letter-spacing:-1px;
@@ -60,10 +67,16 @@
 </head>
 <body>
 <header>
-  <div class="logo">SAI</div>
-  <div>
-    <h1>SAI <span>Dashboard</span></h1>
-    <div class="sub">SANTOSH AI · SALES</div>
+  <div class="header-main">
+    <div class="logo">SAI</div>
+    <div>
+      <h1>SAI <span>Dashboard</span></h1>
+      <div class="sub">SANTOSH AI · SALES</div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn refresh" id="refresh-btn" type="button">↻ Refresh</button>
+    <button class="btn delete" id="delete-btn" type="button">Delete snapshot</button>
   </div>
 </header>
 
@@ -97,7 +110,7 @@
 // browser would dial its own machine, and the laptop holding the SAP
 // connection is behind a firewall that allows outbound calls only.
 const SOURCE = '/receive?name=sales';
-const POLL_MS = 5000;      // the agent publishes every 30 min
+const POLL_MS = 5000;       // check automatically every 5 seconds
 const STALE_MINUTES = 45;   // older than this and the agent has stopped
 
 const nf = new Intl.NumberFormat('en-IN');
@@ -179,6 +192,78 @@ function render(data) {
   }
 }
 
+
+function clearDashboard() {
+  document.getElementById('amount').textContent = '—';
+  document.getElementById('qty').textContent = '—';
+  document.getElementById('lines').textContent = '—';
+  document.getElementById('customers').textContent = '—';
+  document.getElementById('period').textContent = '—';
+  document.getElementById('bars').innerHTML = '';
+  document.getElementById('axis-from').textContent = '—';
+  document.getElementById('axis-to').textContent = '—';
+  fillTable('top-customers', []);
+  fillTable('top-materials', []);
+  fillTable('top-plants', []);
+  document.getElementById('note').textContent = '';
+}
+
+async function refreshPage() {
+  const button = document.getElementById('refresh-btn');
+  button.disabled = true;
+  button.textContent = 'Refreshing…';
+  try {
+    await poll();
+  } finally {
+    button.disabled = false;
+    button.textContent = '↻ Refresh';
+  }
+}
+
+async function deleteSnapshot() {
+  if (!confirm('Delete the current sales snapshot? This cannot be undone.')) return;
+
+  const token = prompt('Enter SAI_DASHBOARD_TOKEN to confirm deletion:');
+  if (token === null) return;
+  if (!token.trim()) {
+    alert('Token is required.');
+    return;
+  }
+
+  const button = document.getElementById('delete-btn');
+  button.disabled = true;
+  button.textContent = 'Deleting…';
+
+  try {
+    const response = await fetch(SOURCE + '&t=' + Date.now(), {
+      method: 'DELETE',
+      cache: 'no-store',
+      headers: {
+        'X-SAI-DASHBOARD-Token': token.trim()
+      }
+    });
+
+    let result = {};
+    try { result = await response.json(); } catch (_) {}
+
+    if (response.status === 401) {
+      throw new Error('Wrong SAI_DASHBOARD_TOKEN');
+    }
+    if (!response.ok) {
+      throw new Error(result.error || ('HTTP ' + response.status));
+    }
+
+    clearDashboard();
+    setStatus('stale', result.deleted ? 'Snapshot deleted' : 'No snapshot existed');
+    setTimeout(() => window.location.reload(), 700);
+  } catch (error) {
+    alert('Delete failed: ' + error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Delete snapshot';
+  }
+}
+
 async function poll() {
   try {
     const response = await fetch(SOURCE + '&t=' + Date.now(), {cache: 'no-store'});
@@ -192,6 +277,9 @@ async function poll() {
     setStatus('down', 'Cannot reach the snapshot: ' + error.message);
   }
 }
+
+document.getElementById('refresh-btn').addEventListener('click', refreshPage);
+document.getElementById('delete-btn').addEventListener('click', deleteSnapshot);
 
 poll();
 setInterval(poll, POLL_MS);

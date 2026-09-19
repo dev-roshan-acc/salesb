@@ -14,6 +14,7 @@ except Exception:
 MAX_BYTES = 4 * 1024 * 1024
 KEY_PREFIX = "snapshot:"
 NAME_CHARS = set("abcdefghijklmnopqrstuvwxyz0123456789-")
+TOKEN_HEADER = "X-SAI-DASHBOARD-Token"
 
 
 def json_response(payload, status=200, cors=False):
@@ -31,10 +32,7 @@ def json_response(payload, status=200, cors=False):
 
 
 def valid_name(name):
-    return (
-        1 <= len(name) <= 40
-        and all(ch in NAME_CHARS for ch in name)
-    )
+    return 1 <= len(name) <= 40 and all(ch in NAME_CHARS for ch in name)
 
 
 def utc_now_iso():
@@ -42,8 +40,6 @@ def utc_now_iso():
 
 
 def kv_missing(value):
-    # With the built-in Python Worker SDK, JavaScript `null` can arrive as
-    # Pyodide's `jsnull` instead of Python None. Treat both as missing.
     return value is None or value is jsnull or type(value).__name__ == "JsNull"
 
 
@@ -51,8 +47,6 @@ class Default(WorkerEntrypoint):
     async def fetch(self, request):
         url = urlparse(request.url)
 
-        # New Python endpoint. The old /receive.php path is kept as an alias so
-        # the existing Santosh AI publisher keeps working during migration.
         if url.path not in ("/receive", "/receive.php"):
             return await self.env.ASSETS.fetch(request)
 
@@ -74,7 +68,6 @@ class Default(WorkerEntrypoint):
                     if key_name.startswith(KEY_PREFIX):
                         snapshots.append(key_name[len(KEY_PREFIX):] + ".json")
             except Exception:
-                # Status should still be useful even if listing fails.
                 snapshots = []
 
             modified = None
@@ -125,8 +118,8 @@ class Default(WorkerEntrypoint):
                 },
             )
 
-        if request.method != "POST":
-            return json_response({"error": "GET or POST only"}, status=405)
+        if request.method not in ("POST", "DELETE"):
+            return json_response({"error": "GET, POST or DELETE only"}, status=405)
 
         try:
             expected = str(self.env.SAI_DASHBOARD_TOKEN)
@@ -135,9 +128,21 @@ class Default(WorkerEntrypoint):
                 {"error": "server token is not configured"}, status=500
             )
 
-        sent = request.headers.get("X-SAI-DASHBOARD-Token") or ""
+        sent = request.headers.get(TOKEN_HEADER) or ""
         if not hmac.compare_digest(str(expected), str(sent)):
             return json_response({"error": "bad or missing token"}, status=401)
+
+        if request.method == "DELETE":
+            existed = not kv_missing(await self.env.SNAPSHOTS.get(key))
+            await self.env.SNAPSHOTS.delete(key)
+            return json_response(
+                {
+                    "ok": True,
+                    "deleted": existed,
+                    "name": name,
+                    "storage_key": key,
+                }
+            )
 
         body = str(await request.text())
         body_bytes = len(body.encode("utf-8"))

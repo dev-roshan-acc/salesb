@@ -1,28 +1,28 @@
 # salesb — Cloudflare Python Worker
 
-This project serves the static dashboard from `public/index.html` and handles snapshot API requests with a Python Worker in `src/index.py`.
+This version adds:
 
-## Deploy
+- `Delete snapshot` button on the dashboard
+- `Refresh` button
+- automatic polling every 5 seconds
+- authenticated `DELETE /receive?name=sales`
 
-Cloudflare Workers Builds settings:
+## Cloudflare secret
 
-- Build command: leave empty
-- Deploy command: `npx wrangler deploy`
-- Root directory: `/`
+The runtime secret must be named:
 
-The Wrangler config explicitly includes `disable_python_external_sdk` so this project can use Cloudflare's built-in Python Workers SDK while deploying directly with Wrangler. This avoids requiring Pywrangler for this dependency-free Worker.
+`SAI_DASHBOARD_TOKEN`
 
-## Secret
+The HTTP header used for POST and DELETE is:
 
-Add the Worker secret `SAI_TOKEN` in Cloudflare Dashboard -> Workers & Pages -> salesb -> Settings -> Variables and Secrets.
+`X-SAI-DASHBOARD-Token`
 
 ## Routes
 
-- `GET /` -> dashboard
-- `GET /receive?name=sales` -> latest stored JSON snapshot
-- `POST /receive?name=sales` -> store JSON snapshot (requires `X-SAI-Token`)
-- `GET /receive?name=sales&status=1` -> status
-- `/receive.php` remains an alias handled by Python; there is no PHP runtime/file.
+- `GET /` — dashboard
+- `GET /receive?name=sales` — latest snapshot
+- `POST /receive?name=sales` — store snapshot, token required
+- `DELETE /receive?name=sales` — delete snapshot, token required
+- `GET /receive?name=sales&status=1` — status
 
-## Runtime null fix
-Cloudflare's built-in Python SDK can expose a missing KV value as Pyodide `jsnull` rather than Python `None`. This project explicitly handles both, so an empty KV returns a real JSON 404 response instead of the text `jsnull`.
+The Delete button prompts for the token in the browser. The token is not embedded in the public HTML and is not stored by the page.
