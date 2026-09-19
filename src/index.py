@@ -87,7 +87,7 @@ class Default(WorkerEntrypoint):
                     pass
 
             try:
-                token_set = bool(str(self.env.SAI_TOKEN))
+                token_set = bool(str(self.env.SAI_DASHBOARD_TOKEN))
             except Exception:
                 token_set = False
 
@@ -129,13 +129,13 @@ class Default(WorkerEntrypoint):
             return json_response({"error": "GET or POST only"}, status=405)
 
         try:
-            expected = str(self.env.SAI_TOKEN)
+            expected = str(self.env.SAI_DASHBOARD_TOKEN)
         except Exception:
             return json_response(
                 {"error": "server token is not configured"}, status=500
             )
 
-        sent = request.headers.get("X-SAI-Token") or ""
+        sent = request.headers.get("X-SAI-DASHBOARD-Token") or ""
         if not hmac.compare_digest(str(expected), str(sent)):
             return json_response({"error": "bad or missing token"}, status=401)
 
