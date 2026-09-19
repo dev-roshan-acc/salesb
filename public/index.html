@@ -97,7 +97,7 @@
 // browser would dial its own machine, and the laptop holding the SAP
 // connection is behind a firewall that allows outbound calls only.
 const SOURCE = '/receive?name=sales';
-const POLL_MS = 60000;      // the agent publishes every 30 min
+const POLL_MS = 5000;      // the agent publishes every 30 min
 const STALE_MINUTES = 45;   // older than this and the agent has stopped
 
 const nf = new Intl.NumberFormat('en-IN');
