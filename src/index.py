@@ -156,7 +156,6 @@ class Default(WorkerEntrypoint):
         stored = json.dumps(decoded, separators=(",", ":"))
 
         await self.env.SNAPSHOTS.put(key, stored)
-
         return json_response(
             {
                 "ok": True,
