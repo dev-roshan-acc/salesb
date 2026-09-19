@@ -23,3 +23,6 @@ Add the Worker secret `SAI_TOKEN` in Cloudflare Dashboard -> Workers & Pages -> 
 - `POST /receive?name=sales` -> store JSON snapshot (requires `X-SAI-Token`)
 - `GET /receive?name=sales&status=1` -> status
 - `/receive.php` remains an alias handled by Python; there is no PHP runtime/file.
+
+## Runtime null fix
+Cloudflare's built-in Python SDK can expose a missing KV value as Pyodide `jsnull` rather than Python `None`. This project explicitly handles both, so an empty KV returns a real JSON 404 response instead of the text `jsnull`.

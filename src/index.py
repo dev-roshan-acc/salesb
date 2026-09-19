@@ -6,6 +6,11 @@ from urllib.parse import parse_qs, urlparse
 
 from workers import Response, WorkerEntrypoint
 
+try:
+    from pyodide.ffi import jsnull
+except Exception:
+    jsnull = object()
+
 MAX_BYTES = 4 * 1024 * 1024
 KEY_PREFIX = "snapshot:"
 NAME_CHARS = set("abcdefghijklmnopqrstuvwxyz0123456789-")
@@ -34,6 +39,12 @@ def valid_name(name):
 
 def utc_now_iso():
     return datetime.now(timezone.utc).isoformat()
+
+
+def kv_missing(value):
+    # With the built-in Python Worker SDK, JavaScript `null` can arrive as
+    # Pyodide's `jsnull` instead of Python None. Treat both as missing.
+    return value is None or value is jsnull or type(value).__name__ == "JsNull"
 
 
 class Default(WorkerEntrypoint):
@@ -67,7 +78,7 @@ class Default(WorkerEntrypoint):
                 snapshots = []
 
             modified = None
-            if stored is not None:
+            if not kv_missing(stored):
                 try:
                     parsed = json.loads(str(stored))
                     if isinstance(parsed, dict):
@@ -87,8 +98,8 @@ class Default(WorkerEntrypoint):
                     "storage": "Workers KV",
                     "snapshots": snapshots,
                     "this_snapshot": name,
-                    "exists": stored is not None,
-                    "size": len(str(stored).encode("utf-8")) if stored is not None else 0,
+                    "exists": not kv_missing(stored),
+                    "size": len(str(stored).encode("utf-8")) if not kv_missing(stored) else 0,
                     "modified": modified,
                     "token_set": token_set,
                 },
@@ -97,7 +108,7 @@ class Default(WorkerEntrypoint):
 
         if request.method == "GET":
             stored = await self.env.SNAPSHOTS.get(key)
-            if stored is None:
+            if kv_missing(stored):
                 return json_response(
                     {"error": "no snapshot yet", "name": name},
                     status=404,
