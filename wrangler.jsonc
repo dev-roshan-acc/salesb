@@ -3,21 +3,16 @@
   "name": "salesb",
   "main": "src/index.py",
   "compatibility_date": "2026-09-19",
-  "compatibility_flags": [
-    "python_workers",
-    "disable_python_external_sdk"
-  ],
+  "compatibility_flags": ["python_workers", "disable_python_external_sdk"],
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
-    "run_worker_first": [
-      "/receive",
-      "/receive.php"
-    ]
+    "run_worker_first": ["/receive", "/receive.php"]
   },
   "kv_namespaces": [
     {
-      "binding": "SNAPSHOTS"
+      "binding": "SNAPSHOTS",
+      "id": "7dfafba8a310405999cb4372ed615522"
     }
   ]
 }
