@@ -26,7 +26,7 @@ function renderHorizontalBars({
   countId,
   rows,
   countLabel,
-  limit = 7,
+  limit = 5,
 }) {
   const holder = document.getElementById(elementId);
   const count = document.getElementById(countId);
@@ -165,7 +165,7 @@ export function renderBreakdownCharts(data) {
     countId: "customer-chart-count",
     rows: top.customers || [],
     countLabel: "customer",
-    limit: 7,
+    limit: 5,
   });
 
   renderMaterialDonut(top.materials || []);
@@ -175,7 +175,7 @@ export function renderBreakdownCharts(data) {
     countId: "plant-chart-count",
     rows: top.plants || [],
     countLabel: "plant",
-    limit: 7,
+    limit: 5,
   });
 }
 

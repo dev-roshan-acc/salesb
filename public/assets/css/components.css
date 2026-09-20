@@ -921,3 +921,309 @@
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }
+
+
+/* ---------- Compact one-screen component overrides ---------- */
+.brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  font-size: 12px;
+}
+
+.brand-title {
+  font-size: 17px;
+}
+
+.brand-subtitle {
+  font-size: 8px;
+  letter-spacing: 1.7px;
+}
+
+.button {
+  min-height: 32px;
+  padding: 6px 10px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+.hero .eyebrow {
+  display: none;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(22px, 2.2vw, 32px);
+  letter-spacing: -1.3px;
+}
+
+.hero-copy {
+  margin-top: 3px;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.live-state {
+  gap: 3px;
+}
+
+.status {
+  padding: 5px 9px;
+  font-size: 9px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.live-meta {
+  font-size: 8px;
+}
+
+.kpi-card {
+  min-height: 0;
+  height: 86px;
+  padding: 11px 13px;
+  border-radius: 13px;
+}
+
+.kpi-label {
+  font-size: 8px;
+  letter-spacing: 1.1px;
+}
+
+.kpi-symbol {
+  width: 25px;
+  height: 25px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.kpi-value {
+  margin-top: 9px;
+  font-size: clamp(22px, 2.5vw, 31px);
+  letter-spacing: -1px;
+}
+
+.kpi-meta {
+  margin-top: 4px;
+  font-size: 8px;
+}
+
+.panel {
+  min-height: 0;
+  overflow: hidden;
+  padding: 10px;
+  border-radius: 13px;
+}
+
+.panel-head {
+  margin-bottom: 7px;
+}
+
+.panel-title {
+  font-size: 11px;
+}
+
+.panel-subtitle {
+  margin-top: 2px;
+  font-size: 8px;
+}
+
+.badge {
+  padding: 4px 6px;
+  font-size: 8px;
+}
+
+.panel--trend {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+}
+
+.trend-actions {
+  gap: 6px;
+}
+
+.segmented-control {
+  padding: 2px;
+  border-radius: 8px;
+}
+
+.segment {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 8px;
+}
+
+.trend-summary {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 2px 0 7px;
+}
+
+.trend-summary-card {
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.trend-summary-card span {
+  font-size: 7px;
+  letter-spacing: .7px;
+}
+
+.trend-summary-card strong {
+  margin-top: 2px;
+  font-size: 10px;
+}
+
+.trend-chart-shell {
+  min-height: 0;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.chart-axis {
+  margin-top: 3px;
+  font-size: 7px;
+}
+
+.analytics-card {
+  min-height: 0;
+  height: 100%;
+}
+
+.hbar-chart {
+  gap: 6px;
+}
+
+.hbar-row {
+  gap: 3px;
+}
+
+.hbar-label,
+.hbar-value {
+  font-size: 8px;
+}
+
+.hbar-track {
+  height: 5px;
+}
+
+.hbar-empty {
+  min-height: 80px;
+  font-size: 8px;
+}
+
+.donut-layout {
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 10px;
+  min-height: 0;
+  height: calc(100% - 32px);
+}
+
+.donut-chart {
+  width: 88px;
+}
+
+.donut-center strong {
+  font-size: 12px;
+}
+
+.donut-center span {
+  font-size: 6px;
+  letter-spacing: .4px;
+}
+
+.donut-legend {
+  gap: 5px;
+}
+
+.donut-legend-row {
+  grid-template-columns: 7px minmax(0, 1fr) auto;
+  gap: 5px;
+}
+
+.donut-swatch {
+  width: 6px;
+  height: 6px;
+}
+
+.donut-name,
+.donut-percent {
+  font-size: 7px;
+}
+
+.table-scroll {
+  overflow: hidden;
+}
+
+.ranking-table {
+  font-size: 8px;
+}
+
+.ranking-table td {
+  padding: 4px 0;
+}
+
+.rank-badge {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  border-radius: 5px;
+  font-size: 7px;
+}
+
+.snapshot-note {
+  min-height: 24px;
+  margin-top: 0;
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-size: 8px;
+}
+
+.details-row {
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.details-row dt {
+  font-size: 8px;
+}
+
+.details-row dd {
+  font-size: 8px;
+}
+
+.poll-progress {
+  height: 6px;
+}
+
+.poll-meta {
+  margin-top: 5px;
+  font-size: 8px;
+}
+
+.footer {
+  font-size: 7px;
+}
+
+.toast {
+  right: 10px;
+  bottom: 10px;
+  min-width: 220px;
+  padding: 9px 10px;
+  font-size: 9px;
+}
+
+/* No internal page/table/chart scrollbars in dashboard mode. */
+.app-shell,
+.dashboard-grid,
+.dashboard-main,
+.dashboard-sidebar,
+.analytics-grid,
+.ranking-grid,
+.panel,
+.table-scroll {
+  overflow: hidden;
+}

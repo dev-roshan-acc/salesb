@@ -7,5 +7,5 @@ export const CONFIG = Object.freeze({
   pollMs: 5000,
   staleMinutes: 45,
   deleteHeader: "X-SAI-DASHBOARD-Token",
-  maxRankingRows: 8,
+  maxRankingRows: 5,
 });

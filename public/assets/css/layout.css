@@ -107,3 +107,77 @@
   gap: 16px;
   margin-top: 16px;
 }
+
+
+/* ---------- One-screen viewport layout ---------- */
+.app-shell {
+  width: min(100%, var(--page-width));
+  height: calc(100dvh - 20px);
+  max-height: calc(100dvh - 20px);
+
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  gap: 8px;
+
+  overflow: hidden;
+}
+
+.topbar {
+  position: relative;
+  top: auto;
+  min-height: 50px;
+  padding: 9px 14px;
+}
+
+.hero {
+  min-height: 38px;
+  margin-top: 0;
+}
+
+.kpi-grid {
+  margin-top: 0;
+  gap: 8px;
+}
+
+.dashboard-grid {
+  min-height: 0;
+  height: 100%;
+  margin-top: 0;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) 235px;
+}
+
+.dashboard-main {
+  min-height: 0;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows:
+    minmax(0, 1.25fr)
+    minmax(0, .86fr)
+    minmax(0, .78fr)
+    auto;
+  gap: 8px;
+}
+
+.dashboard-sidebar {
+  min-height: 0;
+  height: 100%;
+  gap: 8px;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.analytics-grid,
+.ranking-grid {
+  min-height: 0;
+  height: 100%;
+  margin-top: 0;
+  gap: 8px;
+}
+
+.footer {
+  min-height: 12px;
+  margin-top: 0;
+  padding: 0 2px;
+  line-height: 1;
+}
