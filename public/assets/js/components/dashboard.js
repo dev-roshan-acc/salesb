@@ -8,7 +8,6 @@ import {
 import { renderRankingTable } from "./table.js";
 import { renderCurrentTrend } from "./trend-chart.js";
 import { setStatus } from "./status.js";
-import { renderBreakdownCharts, clearBreakdownCharts } from "./breakdown-charts.js";
 
 /**
  * Render the complete dashboard from one snapshot payload.
@@ -41,8 +40,6 @@ export function renderDashboard(data) {
   renderRankingTable("top-customers", top.customers || []);
   renderRankingTable("top-materials", top.materials || []);
   renderRankingTable("top-plants", top.plants || []);
-
-  renderBreakdownCharts(data);
 
   document.getElementById("note").textContent =
     data.note || "Snapshot received successfully.";
@@ -85,7 +82,6 @@ export function clearDashboard() {
   renderRankingTable("top-materials", []);
   renderRankingTable("top-plants", []);
 
-  clearBreakdownCharts();
   renderCurrentTrend();
 }
 

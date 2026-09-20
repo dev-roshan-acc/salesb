@@ -1,183 +1,66 @@
-.app-shell {
-  position: relative;
-  z-index: 1;
-  width: min(100%, var(--page-width));
-  margin: 0 auto;
+.app-shell{
+  position:relative;
+  z-index:1;
+  width:min(100%,var(--page-width));
+  height:calc(100dvh - 24px);
+  margin:0 auto;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr);
+  gap:10px;
+  overflow:hidden;
 }
 
-.topbar {
-  position: sticky;
-  top: 18px;
-  z-index: 20;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-
-  padding: 17px 20px;
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 22px;
-
-  background: rgba(8, 13, 22, 0.84);
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-lg);
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  min-height:58px;
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  background:rgba(8,13,22,.86);
+  backdrop-filter:blur(18px);
+  box-shadow:var(--shadow-lg);
 }
 
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  flex-wrap: wrap;
+.header-right{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:16px;
+  min-width:0;
 }
 
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 22px;
-  margin-top: 28px;
+.topbar-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:nowrap}
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  min-height:0;
 }
 
-.hero h1 {
-  margin: 5px 0 0;
-  font-size: clamp(32px, 4.4vw, 58px);
-  line-height: 0.98;
-  letter-spacing: -2.4px;
-  font-weight: 900;
+.dashboard-body{
+  min-height:0;
+  display:grid;
+  grid-template-rows:minmax(0,1fr) 190px;
+  gap:10px;
+  overflow:hidden;
 }
 
-.hero-copy {
-  max-width: 760px;
-  margin: 12px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.65;
+.upper-grid{
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 310px;
+  gap:10px;
 }
 
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 26px;
+.ranking-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  min-height:0;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(310px, .72fr);
-  gap: 16px;
-  margin-top: 16px;
-}
-
-.dashboard-main,
-.dashboard-sidebar {
-  min-width: 0;
-}
-
-.dashboard-sidebar {
-  display: grid;
-  align-content: start;
-  gap: 16px;
-}
-
-.ranking-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 16px;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-
-  margin-top: 20px;
-  padding: 8px 2px 0;
-  color: #53647a;
-  font-size: 10px;
-}
-
-
-.analytics-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr) minmax(0, 1fr);
-  gap: 16px;
-  margin-top: 16px;
-}
-
-
-/* ---------- One-screen viewport layout ---------- */
-.app-shell {
-  width: min(100%, var(--page-width));
-  height: calc(100dvh - 20px);
-  max-height: calc(100dvh - 20px);
-
-  display: grid;
-  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
-  gap: 8px;
-
-  overflow: hidden;
-}
-
-.topbar {
-  position: relative;
-  top: auto;
-  min-height: 50px;
-  padding: 9px 14px;
-}
-
-.hero {
-  min-height: 38px;
-  margin-top: 0;
-}
-
-.kpi-grid {
-  margin-top: 0;
-  gap: 8px;
-}
-
-.dashboard-grid {
-  min-height: 0;
-  height: 100%;
-  margin-top: 0;
-  gap: 8px;
-  grid-template-columns: minmax(0, 1fr) 235px;
-}
-
-.dashboard-main {
-  min-height: 0;
-  height: 100%;
-
-  display: grid;
-  grid-template-rows:
-    minmax(0, 1.25fr)
-    minmax(0, .86fr)
-    minmax(0, .78fr)
-    auto;
-  gap: 8px;
-}
-
-.dashboard-sidebar {
-  min-height: 0;
-  height: 100%;
-  gap: 8px;
-  grid-template-rows: minmax(0, 1fr) auto;
-}
-
-.analytics-grid,
-.ranking-grid {
-  min-height: 0;
-  height: 100%;
-  margin-top: 0;
-  gap: 8px;
-}
-
-.footer {
-  min-height: 12px;
-  margin-top: 0;
-  padding: 0 2px;
-  line-height: 1;
-}
+.ranking-grid--fixed{height:190px}

@@ -8,12 +8,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Design system -->
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/base.css">
   <link rel="stylesheet" href="/assets/css/layout.css">
@@ -24,7 +20,7 @@
 <body>
   <div class="app-shell">
 
-    <!-- Sticky application header -->
+    <!-- Header: brand, live state and actions in one compact row. -->
     <header class="topbar">
       <a class="brand" href="/" aria-label="SAI Dashboard home">
         <span class="brand-logo" aria-hidden="true">SAI</span>
@@ -34,39 +30,30 @@
         </span>
       </a>
 
-      <nav class="topbar-actions" aria-label="Dashboard actions">
-        <button class="button button--refresh" id="refresh-btn" type="button">
-          <span class="button-icon" aria-hidden="true">↻</span>
-          <span>Refresh</span>
-        </button>
+      <div class="header-right">
+        <div class="live-state">
+          <div class="status status--down" id="status" role="status" aria-live="polite">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="status-text">Connecting…</span>
+          </div>
+          <div class="live-meta" id="refresh-meta">Next refresh in 5s</div>
+        </div>
 
-        <button class="button button--danger" id="delete-btn" type="button">
-          <span class="button-icon" aria-hidden="true">⌫</span>
-          <span>Delete snapshot</span>
-        </button>
-      </nav>
+        <nav class="topbar-actions" aria-label="Dashboard actions">
+          <button class="button button--refresh" id="refresh-btn" type="button">
+            <span class="button-icon" aria-hidden="true">↻</span>
+            <span>Refresh</span>
+          </button>
+
+          <button class="button button--danger" id="delete-btn" type="button">
+            <span class="button-icon" aria-hidden="true">⌫</span>
+            <span>Delete snapshot</span>
+          </button>
+        </nav>
+      </div>
     </header>
 
-    <!-- Page heading and live connection state -->
-    <section class="hero">
-      <div>
-        <p class="eyebrow">SALES INTELLIGENCE</p>
-        <h1>Sales overview</h1>
-        <p class="hero-copy">
-          Live sales snapshot from Santosh AI with day, month and year trend analysis.
-        </p>
-      </div>
-
-      <div class="live-state">
-        <div class="status status--down" id="status" role="status" aria-live="polite">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span id="status-text">Connecting…</span>
-        </div>
-        <div class="live-meta" id="refresh-meta">Next refresh in 5s</div>
-      </div>
-    </section>
-
-    <!-- Primary KPIs -->
+    <!-- Main business KPIs. -->
     <section class="kpi-grid" aria-label="Sales KPIs">
       <article class="kpi-card kpi-card--sales">
         <div class="kpi-card-head">
@@ -83,7 +70,7 @@
           <span class="kpi-symbol" aria-hidden="true">▦</span>
         </div>
         <div class="kpi-value" id="qty">—</div>
-        <div class="kpi-meta">Units billed in selected period</div>
+        <div class="kpi-meta">Units billed</div>
       </article>
 
       <article class="kpi-card kpi-card--lines">
@@ -92,7 +79,7 @@
           <span class="kpi-symbol" aria-hidden="true">≡</span>
         </div>
         <div class="kpi-value" id="lines">—</div>
-        <div class="kpi-meta">Invoice line records</div>
+        <div class="kpi-meta">Invoice lines</div>
       </article>
 
       <article class="kpi-card kpi-card--customers">
@@ -101,20 +88,17 @@
           <span class="kpi-symbol" aria-hidden="true">◎</span>
         </div>
         <div class="kpi-value" id="customers">—</div>
-        <div class="kpi-meta">Unique billed customers</div>
+        <div class="kpi-meta">Billed customers</div>
       </article>
     </section>
 
-    <!-- Main dashboard grid -->
-    <main class="dashboard-grid">
-
-      <section class="dashboard-main">
-
-        <!-- Trend chart -->
+    <!-- One main chart only: Day / Month / Year sales trend. -->
+    <main class="dashboard-body">
+      <section class="upper-grid">
         <article class="panel panel--trend">
           <header class="panel-head panel-head--responsive">
             <div>
-              <h2 class="panel-title" id="trend-title">Daily sales trend</h2>
+              <h1 class="panel-title panel-title--large" id="trend-title">Daily sales trend</h1>
               <p class="panel-subtitle" id="trend-subtitle">Sales movement by day</p>
             </div>
 
@@ -161,104 +145,14 @@
           </div>
         </article>
 
-
-        <!-- Visual analytics: charts derived from the existing snapshot payload -->
-        <section class="analytics-grid" aria-label="Visual sales analytics">
-          <article class="panel analytics-card">
-            <header class="panel-head">
-              <div>
-                <h2 class="panel-title">Customer contribution</h2>
-                <p class="panel-subtitle">Top customers ranked by billed value</p>
-              </div>
-              <span class="badge" id="customer-chart-count">0 customers</span>
-            </header>
-            <div class="hbar-chart" id="customer-chart"></div>
-          </article>
-
-          <article class="panel analytics-card">
-            <header class="panel-head">
-              <div>
-                <h2 class="panel-title">Material sales mix</h2>
-                <p class="panel-subtitle">Share of sales across leading materials</p>
-              </div>
-              <span class="badge">Top 5</span>
-            </header>
-
-            <div class="donut-layout">
-              <div class="donut-chart" id="material-donut" aria-label="Material sales mix">
-                <div class="donut-center">
-                  <strong id="material-donut-total">—</strong>
-                  <span>Top 5 sales</span>
-                </div>
-              </div>
-              <div class="donut-legend" id="material-donut-legend"></div>
-            </div>
-          </article>
-
-          <article class="panel analytics-card">
-            <header class="panel-head">
-              <div>
-                <h2 class="panel-title">Plant performance</h2>
-                <p class="panel-subtitle">Sales value by plant</p>
-              </div>
-              <span class="badge" id="plant-chart-count">0 plants</span>
-            </header>
-            <div class="hbar-chart hbar-chart--plant" id="plant-chart"></div>
-          </article>
-        </section>
-
-        <!-- Ranked tables -->
-        <section class="ranking-grid" aria-label="Sales rankings">
-          <article class="panel">
-            <header class="panel-head">
-              <div>
-                <h2 class="panel-title">Top customers</h2>
-                <p class="panel-subtitle">Highest billed accounts</p>
-              </div>
-            </header>
-            <div class="table-scroll">
-              <table class="ranking-table" id="top-customers"></table>
-            </div>
-          </article>
-
-          <article class="panel">
-            <header class="panel-head">
-              <div>
-                <h2 class="panel-title">Top materials</h2>
-                <p class="panel-subtitle">Best performing products</p>
-              </div>
-            </header>
-            <div class="table-scroll">
-              <table class="ranking-table" id="top-materials"></table>
-            </div>
-          </article>
-
-          <article class="panel">
-            <header class="panel-head">
-              <div>
-                <h2 class="panel-title">By plant</h2>
-                <p class="panel-subtitle">Sales contribution by plant</p>
-              </div>
-            </header>
-            <div class="table-scroll">
-              <table class="ranking-table" id="top-plants"></table>
-            </div>
-          </article>
-        </section>
-
-        <div class="snapshot-note" id="note">
-          Waiting for snapshot note…
-        </div>
-      </section>
-
-      <!-- Sidebar -->
-      <aside class="dashboard-sidebar">
-        <article class="panel">
+        <!-- Operational information needed to understand snapshot freshness. -->
+        <aside class="panel snapshot-panel">
           <header class="panel-head">
             <div>
               <h2 class="panel-title">Snapshot details</h2>
-              <p class="panel-subtitle">Current data freshness and source</p>
+              <p class="panel-subtitle">Data freshness and source</p>
             </div>
+            <span class="badge">Live</span>
           </header>
 
           <dl class="details-list">
@@ -279,39 +173,71 @@
               <dd id="latest-date">—</dd>
             </div>
           </dl>
-        </article>
 
-        <article class="panel">
-          <header class="panel-head">
+          <div class="snapshot-divider"></div>
+
+          <div class="poll-heading">
             <div>
-              <h2 class="panel-title">Auto refresh</h2>
-              <p class="panel-subtitle">Next snapshot check</p>
+              <strong>Auto refresh</strong>
+              <span>Every 5 seconds</span>
             </div>
-            <span class="badge">5 sec</span>
-          </header>
+            <strong id="poll-countdown">5s</strong>
+          </div>
 
           <div class="poll-progress" aria-hidden="true">
             <div class="poll-progress-bar" id="poll-progress"></div>
           </div>
 
-          <div class="poll-meta">
-            <span>Live polling enabled</span>
-            <strong id="poll-countdown">5s</strong>
+          <div class="snapshot-note snapshot-note--inside" id="note">
+            Waiting for snapshot note…
+          </div>
+        </aside>
+      </section>
+
+      <!-- The three useful ranked views remain as tables, not extra charts. -->
+      <section class="ranking-grid ranking-grid--fixed" aria-label="Sales rankings">
+        <article class="panel ranking-panel">
+          <header class="panel-head">
+            <div>
+              <h2 class="panel-title">Top customers</h2>
+              <p class="panel-subtitle">Highest billed accounts</p>
+            </div>
+          </header>
+          <div class="table-scroll">
+            <table class="ranking-table" id="top-customers"></table>
           </div>
         </article>
-      </aside>
-    </main>
 
-    <footer class="footer">
-      <span>SAI Dashboard · Santosh AI</span>
-      <span>Cloudflare Worker snapshot endpoint</span>
-    </footer>
+        <article class="panel ranking-panel">
+          <header class="panel-head">
+            <div>
+              <h2 class="panel-title">Top materials</h2>
+              <p class="panel-subtitle">Best performing products</p>
+            </div>
+          </header>
+          <div class="table-scroll">
+            <table class="ranking-table" id="top-materials"></table>
+          </div>
+        </article>
+
+        <article class="panel ranking-panel">
+          <header class="panel-head">
+            <div>
+              <h2 class="panel-title">By plant</h2>
+              <p class="panel-subtitle">Sales contribution by plant</p>
+            </div>
+          </header>
+          <div class="table-scroll">
+            <table class="ranking-table" id="top-plants"></table>
+          </div>
+        </article>
+      </section>
+    </main>
   </div>
 
-  <!-- Reusable toast -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- Secure delete confirmation modal -->
+  <!-- Secure delete confirmation modal. -->
   <div class="modal-backdrop" id="delete-modal" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
       <div class="modal-icon" aria-hidden="true">!</div>
@@ -322,25 +248,15 @@
       </p>
 
       <label class="field-label" for="delete-token">SAI_DASHBOARD_TOKEN</label>
-      <input
-        class="text-input"
-        id="delete-token"
-        type="password"
-        autocomplete="off"
-        spellcheck="false"
-        placeholder="Enter token"
-      >
+      <input class="text-input" id="delete-token" type="password" autocomplete="off" spellcheck="false" placeholder="Enter token">
 
       <div class="modal-actions">
         <button class="button" id="delete-cancel-btn" type="button">Cancel</button>
-        <button class="button button--danger-filled" id="delete-confirm-btn" type="button">
-          Delete snapshot
-        </button>
+        <button class="button button--danger-filled" id="delete-confirm-btn" type="button">Delete snapshot</button>
       </div>
     </section>
   </div>
 
-  <!-- All application logic is split into ES modules. -->
   <script type="module" src="/assets/js/main.js"></script>
 </body>
 </html>

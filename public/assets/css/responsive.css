@@ -1,213 +1,63 @@
-/*
- * One-screen responsive rules.
- * The dashboard intentionally remains a dense control-room layout rather than
- * stacking into a long page, because the requirement is zero scrolling.
- */
-
-@media (max-width: 1180px) {
-  .dashboard-grid {
-    grid-template-columns: minmax(0, 1fr) 205px;
-  }
-
-  .panel-subtitle {
-    display: none;
-  }
-
-  .ranking-table {
-    font-size: 7.5px;
-  }
+/* Keep the desktop dashboard readable while still fitting inside one viewport. */
+@media (max-width:1180px){
+  .upper-grid{grid-template-columns:minmax(0,1fr) 265px}
+  .brand-subtitle{display:none}
+  .header-right{gap:10px}
+  .kpi-card{padding-inline:13px}
+  .kpi-value{font-size:30px}
+  .ranking-table{font-size:10px}
+  .ranking-table td{padding:5px 0}
 }
 
-@media (max-width: 900px) {
-  body {
-    padding: 6px;
-  }
-
-  .app-shell {
-    height: calc(100dvh - 12px);
-    max-height: calc(100dvh - 12px);
-    gap: 5px;
-  }
-
-  .topbar {
-    min-height: 42px;
-    padding: 6px 9px;
-  }
-
-  .brand-logo {
-    width: 32px;
-    height: 32px;
-    font-size: 10px;
-  }
-
-  .brand-title {
-    font-size: 14px;
-  }
-
-  .brand-subtitle,
-  .hero-copy,
-  .live-meta {
-    display: none;
-  }
-
-  .hero {
-    min-height: 26px;
-  }
-
-  .hero h1 {
-    font-size: 18px;
-  }
-
-  .kpi-grid {
-    gap: 5px;
-  }
-
-  .kpi-card {
-    height: 70px;
-    padding: 8px 9px;
-  }
-
-  .kpi-symbol {
-    display: none;
-  }
-
-  .kpi-value {
-    margin-top: 7px;
-    font-size: 20px;
-  }
-
-  .kpi-meta {
-    font-size: 7px;
-  }
-
-  .dashboard-grid {
-    gap: 5px;
-    grid-template-columns: minmax(0, 1fr) 170px;
-  }
-
-  .dashboard-main,
-  .dashboard-sidebar {
-    gap: 5px;
-  }
-
-  .analytics-grid,
-  .ranking-grid {
-    gap: 5px;
-  }
-
-  .panel {
-    padding: 7px;
-  }
-
-  .trend-summary-card {
-    padding: 4px 5px;
-  }
-
-  .donut-layout {
-    grid-template-columns: 72px minmax(0, 1fr);
-    gap: 6px;
-  }
-
-  .donut-chart {
-    width: 65px;
-  }
-
-  .ranking-table td {
-    padding: 3px 0;
-  }
+@media (max-width:980px){
+  body{padding:8px}
+  .app-shell{height:calc(100dvh - 16px);gap:7px}
+  .topbar{min-height:52px;padding:8px 10px}
+  .brand-logo{width:38px;height:38px}
+  .brand-title{font-size:17px}
+  .live-meta{display:none}
+  .button{min-height:34px;padding:7px 9px;font-size:10px}
+  .kpi-grid{gap:7px}
+  .kpi-card{min-height:92px;padding:11px 12px}
+  .kpi-label{font-size:10px}
+  .kpi-value{font-size:27px;margin-top:10px}
+  .upper-grid{grid-template-columns:minmax(0,1fr) 225px;gap:7px}
+  .dashboard-body{grid-template-rows:minmax(0,1fr) 174px;gap:7px}
+  .ranking-grid{gap:7px}
+  .ranking-grid--fixed{height:174px}
+  .panel{padding:11px}
+  .panel-subtitle{display:none}
+  .trend-summary-card{padding:7px 8px}
+  .details-row{padding:7px 0}
+  .ranking-table{font-size:9px}
+  .rank-badge{width:18px;height:18px;font-size:8px}
 }
 
-@media (max-height: 760px) {
-  .topbar {
-    min-height: 40px;
-    padding-block: 5px;
-  }
-
-  .brand-logo {
-    width: 31px;
-    height: 31px;
-  }
-
-  .hero {
-    min-height: 24px;
-  }
-
-  .hero-copy,
-  .brand-subtitle,
-  .panel-subtitle,
-  .live-meta {
-    display: none;
-  }
-
-  .kpi-card {
-    height: 66px;
-    padding: 7px 10px;
-  }
-
-  .kpi-value {
-    margin-top: 5px;
-    font-size: 20px;
-  }
-
-  .kpi-meta {
-    margin-top: 2px;
-  }
-
-  .panel {
-    padding: 7px;
-  }
-
-  .panel-head {
-    margin-bottom: 4px;
-  }
-
-  .trend-summary {
-    margin-bottom: 4px;
-  }
-
-  .ranking-table td {
-    padding: 2px 0;
-  }
-
-  .snapshot-note {
-    min-height: 20px;
-    padding-block: 3px;
-  }
+@media (max-height:720px){
+  body{padding:8px}
+  .app-shell{height:calc(100dvh - 16px);gap:7px}
+  .topbar{min-height:50px;padding-block:7px}
+  .kpi-card{min-height:86px;padding-block:10px}
+  .kpi-value{font-size:28px;margin-top:8px}
+  .dashboard-body{grid-template-rows:minmax(0,1fr) 166px;gap:7px}
+  .ranking-grid--fixed{height:166px}
+  .panel{padding:10px}
+  .panel-head{margin-bottom:7px}
+  .trend-summary{margin-bottom:7px}
+  .ranking-table td{padding:4px 0}
+  .snapshot-note{min-height:34px;padding:7px 9px}
 }
 
-@media (max-height: 650px) {
-  .hero {
-    display: none;
-  }
-
-  .app-shell {
-    grid-template-rows: auto auto minmax(0, 1fr) auto;
-  }
-
-  .kpi-card {
-    height: 58px;
-  }
-
-  .kpi-meta,
-  .badge {
-    display: none;
-  }
-
-  .kpi-value {
-    margin-top: 4px;
-    font-size: 18px;
-  }
-
-  .trend-summary-card span {
-    display: none;
-  }
-
-  .analytics-card .panel-head,
-  .ranking-grid .panel-head {
-    margin-bottom: 3px;
-  }
-
-  .details-row {
-    padding: 3px 0;
-  }
+@media (max-height:640px){
+  .brand-subtitle,.live-meta,.kpi-meta,.panel-subtitle,.badge{display:none}
+  .kpi-card{min-height:70px;padding-block:8px}
+  .kpi-symbol{width:26px;height:26px}
+  .kpi-value{font-size:24px;margin-top:6px}
+  .dashboard-body{grid-template-rows:minmax(0,1fr) 145px}
+  .ranking-grid--fixed{height:145px}
+  .trend-summary-card span{font-size:7px}
+  .trend-summary-card strong{font-size:11px}
+  .ranking-table{font-size:8.5px}
+  .ranking-table td{padding:3px 0}
+  .snapshot-note{display:none}
 }
