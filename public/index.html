@@ -1,195 +1,1287 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SAI Dashboard — Santosh AI</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet">
-    <style>
-:root{
-  --bg:#05070b; --surface:#0a0f18; --surface2:#0e1522; --line:#1e293b;
-  --text:#f8fafc; --muted:#8ea0b8; --muted2:#5f7188; --red:#ef4444;
-  --green:#22c55e; --amber:#f59e0b; --blue:#60a5fa; --purple:#a78bfa;
-  --radius:20px; --shadow:0 20px 60px rgba(0,0,0,.28);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;font-family:'Inter',system-ui,sans-serif;color:var(--text);padding:28px;
-  background:radial-gradient(circle at 10% 0%,rgba(239,68,68,.09),transparent 30%),
-             radial-gradient(circle at 95% 15%,rgba(96,165,250,.06),transparent 28%),
-             linear-gradient(180deg,#060912,#04070c);
-}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.65),transparent 80%)}
-.shell{max-width:1540px;margin:0 auto;position:relative;z-index:1}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 20px;border:1px solid rgba(255,255,255,.07);background:rgba(8,13,22,.82);backdrop-filter:blur(18px);border-radius:22px;box-shadow:var(--shadow);position:sticky;top:18px;z-index:20}
-.brand{display:flex;align-items:center;gap:14px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-weight:900;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.01)),#0b1220;border:1px solid rgba(239,68,68,.35);box-shadow:0 0 28px rgba(239,68,68,.14);position:relative;overflow:hidden}.logo:after{content:"";position:absolute;width:80px;height:20px;background:linear-gradient(90deg,transparent,rgba(239,68,68,.45),transparent);transform:rotate(-45deg) translateY(-30px);animation:shine 5s linear infinite}@keyframes shine{0%{transform:rotate(-45deg) translateY(-45px)}100%{transform:rotate(-45deg) translateY(65px)}}
-.brand-title{font-size:20px;font-weight:900;letter-spacing:-.5px}.brand-title span{color:var(--red)}.brand-sub{font-size:10px;color:var(--muted2);letter-spacing:2.5px;margin-top:4px;font-weight:700}
-.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);background:#0c1421;color:#dce6f2;padding:10px 14px;border-radius:12px;font:700 12px 'Inter',sans-serif;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:8px}.btn:hover{transform:translateY(-1px);border-color:#3b4d65;background:#111b2a}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}.btn.refresh{color:#bfdbfe;border-color:rgba(96,165,250,.28)}.btn.delete{color:#fecaca;border-color:rgba(239,68,68,.30)}.btn svg{width:15px;height:15px}
-.hero{margin-top:22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end}.hero h1{font-size:clamp(30px,4vw,52px);line-height:1;letter-spacing:-2px;font-weight:900}.hero p{color:var(--muted);font-size:14px;margin-top:10px;max-width:720px;line-height:1.6}.live-panel{display:flex;flex-direction:column;align-items:flex-end;gap:8px}.status{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;color:#86efac;border:1px solid rgba(34,197,94,.28);background:rgba(34,197,94,.08)}.status.stale{color:#fcd34d;border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)}.status.down{color:#fca5a5;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08)}.status .dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.35)}70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}.refresh-meta{font-size:11px;color:var(--muted2)}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:24px}.kpi{position:relative;overflow:hidden;padding:22px;min-height:165px;border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01)),var(--surface);box-shadow:0 12px 34px rgba(0,0,0,.16)}.kpi:before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),transparent 70%);opacity:.75}.kpi:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-40px;top:-55px;background:radial-gradient(circle,var(--glow),transparent 68%)}.kpi-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:1.7px;color:var(--muted);font-weight:800}.kpi-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--accent)}.kpi-icon svg{width:17px;height:17px}.kpi-value{margin-top:22px;font-size:clamp(30px,3.7vw,44px);line-height:1;font-weight:900;letter-spacing:-1.7px;position:relative;z-index:1}.kpi-meta{margin-top:10px;color:var(--muted2);font-size:11px;position:relative;z-index:1}.kpi.red{--accent:#ef4444;--glow:rgba(239,68,68,.14)}.kpi.blue{--accent:#60a5fa;--glow:rgba(96,165,250,.13)}.kpi.purple{--accent:#a78bfa;--glow:rgba(167,139,250,.13)}.kpi.green{--accent:#34d399;--glow:rgba(52,211,153,.13)}
-.content-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.75fr);gap:16px;margin-top:16px}.panel{border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.005)),var(--surface);padding:20px;min-width:0}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}.panel-title{font-size:14px;font-weight:800}.panel-sub{font-size:11px;color:var(--muted2);margin-top:4px}.mini-badge{font-size:10px;color:#cbd5e1;border:1px solid var(--line);background:#0d1623;padding:6px 8px;border-radius:999px;white-space:nowrap}
-.chart-wrap{height:300px;position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 25%,8.33% 100%;border:1px solid rgba(255,255,255,.04)}canvas{width:100%;height:100%;display:block}.chart-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);margin-top:8px}
-.tables{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}td{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.055);color:#d7e0ea;vertical-align:middle}tr:last-child td{border-bottom:0}td.n{text-align:right;color:#aab8ca;font-variant-numeric:tabular-nums;white-space:nowrap}.rank{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#101927;border:1px solid #1f2c3e;color:#7f90a6;font-size:10px;font-weight:800;margin-right:8px}
-.note-card{margin-top:16px;padding:14px 16px;border:1px dashed rgba(255,255,255,.08);border-radius:14px;color:#72839a;font-size:11px;min-height:44px;display:flex;align-items:center}.side-stack{display:grid;gap:16px}.snapshot-row{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.055)}.snapshot-row:last-child{border-bottom:0}.snapshot-label{font-size:11px;color:var(--muted2)}.snapshot-value{font-size:12px;color:#dce6f2;font-weight:700;text-align:right;word-break:break-word}.progress-shell{border-radius:999px;background:#101827;height:8px;overflow:hidden;border:1px solid #1b2839}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#ef4444,#fb7185);box-shadow:0 0 18px rgba(239,68,68,.25);transition:width .35s}.progress-meta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;color:var(--muted2);font-size:10px}.footer{margin-top:20px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#53647a;font-size:10px;padding:6px 2px 0}.toast{position:fixed;right:22px;bottom:22px;z-index:50;min-width:260px;max-width:360px;padding:13px 14px;border-radius:14px;background:#0d1521;border:1px solid #24344a;color:#dce7f3;font-size:12px;box-shadow:var(--shadow);transform:translateY(20px);opacity:0;pointer-events:none;transition:.22s}.toast.show{transform:translateY(0);opacity:1}.toast.error{border-color:rgba(239,68,68,.35);color:#fecaca}.toast.success{border-color:rgba(34,197,94,.30);color:#bbf7d0}
-@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}.tables{grid-template-columns:1fr 1fr}}@media(max-width:760px){body{padding:14px}.topbar{top:10px;padding:14px;flex-wrap:wrap}.brand-sub{display:none}.top-actions{width:100%;justify-content:flex-start}.hero{grid-template-columns:1fr}.live-panel{align-items:flex-start}.kpi-grid{grid-template-columns:1fr}.tables{grid-template-columns:1fr}.chart-wrap{height:240px}}
-</style>
-  </head>
-  <body>
-    <div class="shell">
-      <div class="topbar">
-        <div class="brand">
-          <div class="logo">SAI</div>
-          <div><div class="brand-title">SAI <span>Dashboard</span></div><div
-              class="brand-sub">SANTOSH AI · SALES INTELLIGENCE</div></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>SAI Dashboard — Santosh AI</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #05070b;
+                --surface: #0a0f18;
+                --surface2: #0e1522;
+                --line: #1e293b;
+                --text: #f8fafc;
+                --muted: #8ea0b8;
+                --muted2: #5f7188;
+                --red: #ef4444;
+                --green: #22c55e;
+                --amber: #f59e0b;
+                --blue: #60a5fa;
+                --purple: #a78bfa;
+                --radius: 20px;
+                --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                min-height: 100vh;
+                font-family: "Inter", system-ui, sans-serif;
+                color: var(--text);
+                padding: 28px;
+                background: radial-gradient(circle at 10% 0%, rgba(239, 68, 68, 0.09), transparent 30%),
+                    radial-gradient(circle at 95% 15%, rgba(96, 165, 250, 0.06), transparent 28%),
+                    linear-gradient(180deg, #060912, #04070c);
+            }
+            body:before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+                background-size: 32px 32px;
+                mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent 80%);
+            }
+            .shell {
+                max-width: 1540px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 1;
+            }
+            .topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                padding: 18px 20px;
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                background: rgba(8, 13, 22, 0.82);
+                backdrop-filter: blur(18px);
+                border-radius: 22px;
+                box-shadow: var(--shadow);
+                position: sticky;
+                top: 18px;
+                z-index: 20;
+            }
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            .logo {
+                width: 48px;
+                height: 48px;
+                border-radius: 15px;
+                display: grid;
+                place-items: center;
+                font-weight: 900;
+                background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01)), #0b1220;
+                border: 1px solid rgba(239, 68, 68, 0.35);
+                box-shadow: 0 0 28px rgba(239, 68, 68, 0.14);
+                position: relative;
+                overflow: hidden;
+            }
+            .logo:after {
+                content: "";
+                position: absolute;
+                width: 80px;
+                height: 20px;
+                background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.45), transparent);
+                transform: rotate(-45deg) translateY(-30px);
+                animation: shine 5s linear infinite;
+            }
+            @keyframes shine {
+                0% {
+                    transform: rotate(-45deg) translateY(-45px);
+                }
+                100% {
+                    transform: rotate(-45deg) translateY(65px);
+                }
+            }
+            .brand-title {
+                font-size: 20px;
+                font-weight: 900;
+                letter-spacing: -0.5px;
+            }
+            .brand-title span {
+                color: var(--red);
+            }
+            .brand-sub {
+                font-size: 10px;
+                color: var(--muted2);
+                letter-spacing: 2.5px;
+                margin-top: 4px;
+                font-weight: 700;
+            }
+            .top-actions {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .btn {
+                border: 1px solid var(--line);
+                background: #0c1421;
+                color: #dce6f2;
+                padding: 10px 14px;
+                border-radius: 12px;
+                font:
+                    700 12px "Inter",
+                    sans-serif;
+                cursor: pointer;
+                transition: 0.18s;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .btn:hover {
+                transform: translateY(-1px);
+                border-color: #3b4d65;
+                background: #111b2a;
+            }
+            .btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none;
+            }
+            .btn.refresh {
+                color: #bfdbfe;
+                border-color: rgba(96, 165, 250, 0.28);
+            }
+            .btn.delete {
+                color: #fecaca;
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+            .btn svg {
+                width: 15px;
+                height: 15px;
+            }
+            .hero {
+                margin-top: 22px;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                gap: 18px;
+                align-items: end;
+            }
+            .hero h1 {
+                font-size: clamp(30px, 4vw, 52px);
+                line-height: 1;
+                letter-spacing: -2px;
+                font-weight: 900;
+            }
+            .hero p {
+                color: var(--muted);
+                font-size: 14px;
+                margin-top: 10px;
+                max-width: 720px;
+                line-height: 1.6;
+            }
+            .live-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 8px;
+            }
+            .status {
+                display: inline-flex;
+                align-items: center;
+                gap: 9px;
+                padding: 8px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 700;
+                color: #86efac;
+                border: 1px solid rgba(34, 197, 94, 0.28);
+                background: rgba(34, 197, 94, 0.08);
+            }
+            .status.stale {
+                color: #fcd34d;
+                border-color: rgba(245, 158, 11, 0.3);
+                background: rgba(245, 158, 11, 0.08);
+            }
+            .status.down {
+                color: #fca5a5;
+                border-color: rgba(239, 68, 68, 0.3);
+                background: rgba(239, 68, 68, 0.08);
+            }
+            .status .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: currentColor;
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.35);
+                }
+                70% {
+                    box-shadow: 0 0 0 9px rgba(34, 197, 94, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+                }
+            }
+            .refresh-meta {
+                font-size: 11px;
+                color: var(--muted2);
+            }
+            .kpi-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 16px;
+                margin-top: 24px;
+            }
+            .kpi {
+                position: relative;
+                overflow: hidden;
+                padding: 22px;
+                min-height: 165px;
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                border-radius: var(--radius);
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01)),
+                    var(--surface);
+                box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16);
+            }
+            .kpi:before {
+                content: "";
+                position: absolute;
+                inset: 0 auto auto 0;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(90deg, var(--accent), transparent 70%);
+                opacity: 0.75;
+            }
+            .kpi:after {
+                content: "";
+                position: absolute;
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                right: -40px;
+                top: -55px;
+                background: radial-gradient(circle, var(--glow), transparent 68%);
+            }
+            .kpi-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+            }
+            .kpi-label {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1.7px;
+                color: var(--muted);
+                font-weight: 800;
+            }
+            .kpi-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                display: grid;
+                place-items: center;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                color: var(--accent);
+            }
+            .kpi-icon svg {
+                width: 17px;
+                height: 17px;
+            }
+            .kpi-value {
+                margin-top: 22px;
+                font-size: clamp(30px, 3.7vw, 44px);
+                line-height: 1;
+                font-weight: 900;
+                letter-spacing: -1.7px;
+                position: relative;
+                z-index: 1;
+            }
+            .kpi-meta {
+                margin-top: 10px;
+                color: var(--muted2);
+                font-size: 11px;
+                position: relative;
+                z-index: 1;
+            }
+            .kpi.red {
+                --accent: #ef4444;
+                --glow: rgba(239, 68, 68, 0.14);
+            }
+            .kpi.blue {
+                --accent: #60a5fa;
+                --glow: rgba(96, 165, 250, 0.13);
+            }
+            .kpi.purple {
+                --accent: #a78bfa;
+                --glow: rgba(167, 139, 250, 0.13);
+            }
+            .kpi.green {
+                --accent: #34d399;
+                --glow: rgba(52, 211, 153, 0.13);
+            }
+            .content-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.75fr);
+                gap: 16px;
+                margin-top: 16px;
+            }
+            .panel {
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                border-radius: var(--radius);
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.005)),
+                    var(--surface);
+                padding: 20px;
+                min-width: 0;
+            }
+            .panel-head {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 18px;
+            }
+            .panel-title {
+                font-size: 14px;
+                font-weight: 800;
+            }
+            .panel-sub {
+                font-size: 11px;
+                color: var(--muted2);
+                margin-top: 4px;
+            }
+            .mini-badge {
+                font-size: 10px;
+                color: #cbd5e1;
+                border: 1px solid var(--line);
+                background: #0d1623;
+                padding: 6px 8px;
+                border-radius: 999px;
+                white-space: nowrap;
+            }
+            .chart-wrap {
+                height: 300px;
+                position: relative;
+                border-radius: 16px;
+                overflow: hidden;
+                background: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+                background-size:
+                    100% 25%,
+                    8.33% 100%;
+                border: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            canvas {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+            .chart-axis {
+                display: flex;
+                justify-content: space-between;
+                font-size: 10px;
+                color: var(--muted2);
+                margin-top: 8px;
+            }
+            .trend-head-actions {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .trend-switch {
+                display: inline-flex;
+                padding: 3px;
+                border-radius: 11px;
+                background: #0a111d;
+                border: 1px solid #1c2939;
+            }
+            .trend-btn {
+                appearance: none;
+                border: 0;
+                background: transparent;
+                color: #71849b;
+                padding: 7px 11px;
+                border-radius: 8px;
+                font:
+                    800 10px "Inter",
+                    sans-serif;
+                letter-spacing: 0.3px;
+                cursor: pointer;
+                transition: 0.18s;
+            }
+            .trend-btn:hover {
+                color: #c9d7e8;
+            }
+            .trend-btn.active {
+                color: #fff;
+                background: linear-gradient(135deg, #dc2626, #ef4444);
+                box-shadow: 0 5px 16px rgba(239, 68, 68, 0.22);
+            }
+            .trend-stats {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 10px;
+                margin: 14px 0 16px;
+            }
+            .trend-stat {
+                background: #09111d;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
+                padding: 11px 12px;
+                min-width: 0;
+            }
+            .trend-stat-label {
+                font-size: 9px;
+                color: #61758e;
+                text-transform: uppercase;
+                letter-spacing: 1.2px;
+                font-weight: 800;
+            }
+            .trend-stat-value {
+                font-size: 14px;
+                font-weight: 800;
+                color: #e8eef6;
+                margin-top: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .chart-wrap {
+                overflow: visible;
+            }
+            .chart-inner {
+                height: 300px;
+                position: relative;
+                border-radius: 16px;
+                overflow: hidden;
+                background: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+                background-size:
+                    100% 25%,
+                    8.33% 100%;
+                border: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            .chart-tooltip {
+                position: absolute;
+                z-index: 5;
+                pointer-events: none;
+                opacity: 0;
+                transform: translate(-50%, calc(-100% - 12px));
+                transition: opacity 0.12s;
+                background: #101827;
+                border: 1px solid #2a3b52;
+                border-radius: 10px;
+                padding: 8px 10px;
+                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.38);
+                font-size: 10px;
+                min-width: 110px;
+            }
+            .chart-tooltip.show {
+                opacity: 1;
+            }
+            .chart-tooltip strong {
+                display: block;
+                color: #fff;
+                font-size: 11px;
+                margin-bottom: 3px;
+            }
+            .chart-tooltip span {
+                color: #91a3b9;
+            }
+
+            .tables {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 16px;
+                margin-top: 16px;
+            }
+            .table-wrap {
+                overflow: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+            }
+            td {
+                padding: 11px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+                color: #d7e0ea;
+                vertical-align: middle;
+            }
+            tr:last-child td {
+                border-bottom: 0;
+            }
+            td.n {
+                text-align: right;
+                color: #aab8ca;
+                font-variant-numeric: tabular-nums;
+                white-space: nowrap;
+            }
+            .rank {
+                display: inline-grid;
+                place-items: center;
+                width: 22px;
+                height: 22px;
+                border-radius: 7px;
+                background: #101927;
+                border: 1px solid #1f2c3e;
+                color: #7f90a6;
+                font-size: 10px;
+                font-weight: 800;
+                margin-right: 8px;
+            }
+            .note-card {
+                margin-top: 16px;
+                padding: 14px 16px;
+                border: 1px dashed rgba(255, 255, 255, 0.08);
+                border-radius: 14px;
+                color: #72839a;
+                font-size: 11px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+            .side-stack {
+                display: grid;
+                gap: 16px;
+            }
+            .snapshot-row {
+                display: flex;
+                justify-content: space-between;
+                gap: 14px;
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+            }
+            .snapshot-row:last-child {
+                border-bottom: 0;
+            }
+            .snapshot-label {
+                font-size: 11px;
+                color: var(--muted2);
+            }
+            .snapshot-value {
+                font-size: 12px;
+                color: #dce6f2;
+                font-weight: 700;
+                text-align: right;
+                word-break: break-word;
+            }
+            .progress-shell {
+                border-radius: 999px;
+                background: #101827;
+                height: 8px;
+                overflow: hidden;
+                border: 1px solid #1b2839;
+            }
+            .progress-bar {
+                height: 100%;
+                width: 0;
+                background: linear-gradient(90deg, #ef4444, #fb7185);
+                box-shadow: 0 0 18px rgba(239, 68, 68, 0.25);
+                transition: width 0.35s;
+            }
+            .progress-meta {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                margin-top: 8px;
+                color: var(--muted2);
+                font-size: 10px;
+            }
+            .footer {
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+                gap: 14px;
+                flex-wrap: wrap;
+                color: #53647a;
+                font-size: 10px;
+                padding: 6px 2px 0;
+            }
+            .toast {
+                position: fixed;
+                right: 22px;
+                bottom: 22px;
+                z-index: 50;
+                min-width: 260px;
+                max-width: 360px;
+                padding: 13px 14px;
+                border-radius: 14px;
+                background: #0d1521;
+                border: 1px solid #24344a;
+                color: #dce7f3;
+                font-size: 12px;
+                box-shadow: var(--shadow);
+                transform: translateY(20px);
+                opacity: 0;
+                pointer-events: none;
+                transition: 0.22s;
+            }
+            .toast.show {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            .toast.error {
+                border-color: rgba(239, 68, 68, 0.35);
+                color: #fecaca;
+            }
+            .toast.success {
+                border-color: rgba(34, 197, 94, 0.3);
+                color: #bbf7d0;
+            }
+            @media (max-width: 1100px) {
+                .kpi-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+                .content-grid {
+                    grid-template-columns: 1fr;
+                }
+                .tables {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+            @media (max-width: 760px) {
+                body {
+                    padding: 14px;
+                }
+                .topbar {
+                    top: 10px;
+                    padding: 14px;
+                    flex-wrap: wrap;
+                }
+                .brand-sub {
+                    display: none;
+                }
+                .top-actions {
+                    width: 100%;
+                    justify-content: flex-start;
+                }
+                .hero {
+                    grid-template-columns: 1fr;
+                }
+                .live-panel {
+                    align-items: flex-start;
+                }
+                .kpi-grid {
+                    grid-template-columns: 1fr;
+                }
+                .tables {
+                    grid-template-columns: 1fr;
+                }
+                .chart-inner {
+                    height: 240px;
+                }
+                .trend-stats {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .trend-head-actions {
+                    justify-content: flex-start;
+                    width: 100%;
+                }
+                .panel-head {
+                    flex-wrap: wrap;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="shell">
+            <div class="topbar">
+                <div class="brand">
+                    <div class="logo">SAI</div>
+                    <div>
+                        <div class="brand-title">SAI <span>Dashboard</span></div>
+                        <div class="brand-sub">SANTOSH AI · SALES INTELLIGENCE</div>
+                    </div>
+                </div>
+                <div class="top-actions">
+                    <button class="btn refresh" id="refresh-btn" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 11a8 8 0 1 0-2.3 5.7L20 14" />
+                            <path d="M20 5v6h-6" /></svg
+                        >Refresh
+                    </button>
+                    <button class="btn delete" id="delete-btn" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 6h18" />
+                            <path d="M8 6V4h8v2" />
+                            <path d="M19 6l-1 14H6L5 6" />
+                            <path d="M10 11v5M14 11v5" /></svg
+                        >Delete snapshot
+                    </button>
+                </div>
+            </div>
+
+            <section class="hero">
+                <div>
+                    <h1>Sales overview</h1>
+                    <p>Live sales snapshot pushed by Santosh AI, refreshed automatically every 5 seconds.</p>
+                </div>
+                <div class="live-panel">
+                    <div class="status down" id="status">
+                        <span class="dot"></span><span id="status-text">Connecting…</span>
+                    </div>
+                    <div class="refresh-meta" id="refresh-meta">Next refresh in 5s</div>
+                </div>
+            </section>
+
+            <section class="kpi-grid">
+                <article class="kpi red">
+                    <div class="kpi-top">
+                        <div class="kpi-label">Sales Value</div>
+                        <div class="kpi-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="amount">—</div>
+                    <div class="kpi-meta" id="period">—</div>
+                </article>
+                <article class="kpi blue">
+                    <div class="kpi-top">
+                        <div class="kpi-label">Quantity</div>
+                        <div class="kpi-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                />
+                                <path d="M3.3 7l8.7 5 8.7-5M12 22V12" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="qty">—</div>
+                    <div class="kpi-meta">Units billed in selected period</div>
+                </article>
+                <article class="kpi purple">
+                    <div class="kpi-top">
+                        <div class="kpi-label">Line Items</div>
+                        <div class="kpi-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 6h16M4 12h16M4 18h10" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="lines">—</div>
+                    <div class="kpi-meta">Invoice line records</div>
+                </article>
+                <article class="kpi green">
+                    <div class="kpi-top">
+                        <div class="kpi-label">Customers</div>
+                        <div class="kpi-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" id="customers">—</div>
+                    <div class="kpi-meta">Unique billed customers</div>
+                </article>
+            </section>
+
+            <section class="content-grid">
+                <div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title" id="trend-title">Daily sales trend</div>
+                                <div class="panel-sub" id="trend-subtitle">Sales movement by day</div>
+                            </div>
+                            <div class="trend-head-actions">
+                                <div class="trend-switch" role="group" aria-label="Sales trend period">
+                                    <button class="trend-btn active" type="button" data-trend="day">DAY</button>
+                                    <button class="trend-btn" type="button" data-trend="month">MONTH</button>
+                                    <button class="trend-btn" type="button" data-trend="year">YEAR</button>
+                                </div>
+                                <div class="mini-badge" id="trend-count">0 days</div>
+                            </div>
+                        </div>
+
+                        <div class="trend-stats">
+                            <div class="trend-stat">
+                                <div class="trend-stat-label">Total sales</div>
+                                <div class="trend-stat-value" id="trend-total">—</div>
+                            </div>
+                            <div class="trend-stat">
+                                <div class="trend-stat-label">Average</div>
+                                <div class="trend-stat-value" id="trend-average">—</div>
+                            </div>
+                            <div class="trend-stat">
+                                <div class="trend-stat-label">Highest</div>
+                                <div class="trend-stat-value" id="trend-highest">—</div>
+                            </div>
+                            <div class="trend-stat">
+                                <div class="trend-stat-label">Periods</div>
+                                <div class="trend-stat-value" id="trend-periods">—</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-wrap">
+                            <div class="chart-inner" id="chart-inner">
+                                <canvas id="trend-chart"></canvas>
+                                <div class="chart-tooltip" id="chart-tooltip"><strong></strong><span></span></div>
+                            </div>
+                        </div>
+                        <div class="chart-axis"><span id="axis-from">—</span><span id="axis-to">—</span></div>
+                    </div>
+                    <div class="tables">
+                        <div class="panel">
+                            <div class="panel-head">
+                                <div>
+                                    <div class="panel-title">Top customers</div>
+                                    <div class="panel-sub">Highest billed accounts</div>
+                                </div>
+                            </div>
+                            <div class="table-wrap"><table id="top-customers"></table></div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-head">
+                                <div>
+                                    <div class="panel-title">Top materials</div>
+                                    <div class="panel-sub">Best performing products</div>
+                                </div>
+                            </div>
+                            <div class="table-wrap"><table id="top-materials"></table></div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-head">
+                                <div>
+                                    <div class="panel-title">By plant</div>
+                                    <div class="panel-sub">Sales contribution by plant</div>
+                                </div>
+                            </div>
+                            <div class="table-wrap"><table id="top-plants"></table></div>
+                        </div>
+                    </div>
+                    <div class="note-card" id="note">Waiting for snapshot note…</div>
+                </div>
+
+                <div class="side-stack">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Snapshot details</div>
+                                <div class="panel-sub">Current data freshness and source</div>
+                            </div>
+                        </div>
+                        <div class="snapshot-row">
+                            <span class="snapshot-label">Generated</span
+                            ><span class="snapshot-value" id="generated-at">—</span>
+                        </div>
+                        <div class="snapshot-row">
+                            <span class="snapshot-label">Received</span
+                            ><span class="snapshot-value" id="received-at">—</span>
+                        </div>
+                        <div class="snapshot-row">
+                            <span class="snapshot-label">Source</span
+                            ><span class="snapshot-value" id="source-name">Santosh AI</span>
+                        </div>
+                        <div class="snapshot-row">
+                            <span class="snapshot-label">Latest date</span
+                            ><span class="snapshot-value" id="latest-date">—</span>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Auto refresh</div>
+                                <div class="panel-sub">Next snapshot check</div>
+                            </div>
+                            <div class="mini-badge">5 sec</div>
+                        </div>
+                        <div class="progress-shell"><div class="progress-bar" id="poll-progress"></div></div>
+                        <div class="progress-meta">
+                            <span>Live polling enabled</span><span id="poll-countdown">5s</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <span>SAI Dashboard · Santosh AI</span><span>Cloudflare Worker snapshot endpoint</span>
+            </footer>
         </div>
-        <div class="top-actions">
-          <button class="btn refresh" id="refresh-btn" type="button"><svg
-              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7L20 14" /><path
-                d="M20 5v6h-6" /></svg>Refresh</button>
-          <button class="btn delete" id="delete-btn" type="button"><svg
-              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path
-                d="M19 6l-1 14H6L5 6" /><path
-                d="M10 11v5M14 11v5" /></svg>Delete snapshot</button>
-        </div>
-      </div>
+        <div class="toast" id="toast"></div>
+        <script>
+            const SOURCE = "/receive?name=sales";
+            const POLL_MS = 10000;
+            const STALE_MINUTES = 45;
+            const nf = new Intl.NumberFormat("en-IN");
+            let lastData = null,
+                pollStartedAt = Date.now(),
+                toastTimer = null,
+                trendMode = "day",
+                trendHitPoints = [];
 
-      <section class="hero">
-        <div><h1>Sales overview</h1><p>Live sales snapshot pushed by Santosh AI,
-            refreshed automatically every 5 seconds.</p></div>
-        <div class="live-panel"><div class="status down" id="status"><span
-              class="dot"></span><span
-              id="status-text">Connecting…</span></div><div class="refresh-meta"
-            id="refresh-meta">Next refresh in 5s</div></div>
-      </section>
+            function money(value) {
+                const n = Number(value) || 0;
+                if (Math.abs(n) >= 1e7) return (n / 1e7).toFixed(2) + " Cr";
+                if (Math.abs(n) >= 1e5) return (n / 1e5).toFixed(2) + " L";
+                return nf.format(Math.round(n));
+            }
+            function showToast(text, kind = "") {
+                const t = document.getElementById("toast");
+                t.textContent = text;
+                t.className = "toast show" + (kind ? " " + kind : "");
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => (t.className = "toast"), 2600);
+            }
+            function setStatus(kind, text) {
+                document.getElementById("status").className = "status " + (kind || "");
+                document.getElementById("status-text").textContent = text;
+            }
+            function fillTable(id, rows) {
+                const table = document.getElementById(id);
+                table.innerHTML = "";
+                (rows || []).slice(0, 8).forEach((row, index) => {
+                    const tr = table.insertRow();
+                    const c1 = tr.insertCell();
+                    const rank = document.createElement("span");
+                    rank.className = "rank";
+                    rank.textContent = index + 1;
+                    c1.appendChild(rank);
+                    c1.appendChild(document.createTextNode(row.name || "—"));
+                    const c2 = tr.insertCell();
+                    c2.className = "n";
+                    c2.textContent = money(row.amount);
+                });
+                if (!table.rows.length) {
+                    const cell = table.insertRow().insertCell();
+                    cell.colSpan = 2;
+                    cell.textContent = "No data";
+                    cell.style.color = "#5f7188";
+                    cell.style.padding = "14px 0";
+                }
+            }
 
-      <section class="kpi-grid">
-        <article class="kpi red"><div class="kpi-top"><div
-              class="kpi-label">Sales Value</div><div class="kpi-icon"><svg
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2"><path
-                  d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" /></svg></div></div><div
-            class="kpi-value" id="amount">—</div><div class="kpi-meta"
-            id="period">—</div></article>
-        <article class="kpi blue"><div class="kpi-top"><div
-              class="kpi-label">Quantity</div><div class="kpi-icon"><svg
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2"><path
-                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><path
-                  d="M3.3 7l8.7 5 8.7-5M12 22V12" /></svg></div></div><div
-            class="kpi-value" id="qty">—</div><div class="kpi-meta">Units billed
-            in selected period</div></article>
-        <article class="kpi purple"><div class="kpi-top"><div
-              class="kpi-label">Line Items</div><div class="kpi-icon"><svg
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2"><path
-                  d="M4 6h16M4 12h16M4 18h10" /></svg></div></div><div
-            class="kpi-value" id="lines">—</div><div class="kpi-meta">Invoice
-            line records</div></article>
-        <article class="kpi green"><div class="kpi-top"><div
-              class="kpi-label">Customers</div><div class="kpi-icon"><svg
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2"><path
-                  d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9"
-                  cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path
-                  d="M16 3.13a4 4 0 0 1 0 7.75" /></svg></div></div><div
-            class="kpi-value" id="customers">—</div><div class="kpi-meta">Unique
-            billed customers</div></article>
-      </section>
+            function clearCanvas() {
+                const canvas = document.getElementById("trend-chart");
+                const ctx = canvas.getContext("2d");
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+                canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.clearRect(0, 0, rect.width, rect.height);
+                return { canvas, ctx, width: rect.width, height: rect.height };
+            }
 
-      <section class="content-grid">
-        <div>
-          <div class="panel">
-            <div class="panel-head"><div><div class="panel-title">Daily sales
-                  trend</div><div class="panel-sub">Sales movement across the
-                  current snapshot period</div></div><div class="mini-badge"
-                id="trend-count">0 days</div></div>
-            <div class="chart-wrap"><canvas id="trend-chart"></canvas></div>
-            <div class="chart-axis"><span id="axis-from">—</span><span
-                id="axis-to">—</span></div>
-          </div>
-          <div class="tables">
-            <div class="panel"><div class="panel-head"><div><div
-                    class="panel-title">Top customers</div><div
-                    class="panel-sub">Highest billed
-                    accounts</div></div></div><div class="table-wrap"><table
-                  id="top-customers"></table></div></div>
-            <div class="panel"><div class="panel-head"><div><div
-                    class="panel-title">Top materials</div><div
-                    class="panel-sub">Best performing
-                    products</div></div></div><div class="table-wrap"><table
-                  id="top-materials"></table></div></div>
-            <div class="panel"><div class="panel-head"><div><div
-                    class="panel-title">By plant</div><div
-                    class="panel-sub">Sales contribution by
-                    plant</div></div></div><div class="table-wrap"><table
-                  id="top-plants"></table></div></div>
-          </div>
-          <div class="note-card" id="note">Waiting for snapshot note…</div>
-        </div>
+            function pointDate(raw, data) {
+                if (!raw) return null;
+                let d = new Date(raw);
+                if (!isNaN(d)) return d;
 
-        <div class="side-stack">
-          <div class="panel">
-            <div class="panel-head"><div><div class="panel-title">Snapshot
-                  details</div><div class="panel-sub">Current data freshness and
-                  source</div></div></div>
-            <div class="snapshot-row"><span
-                class="snapshot-label">Generated</span><span
-                class="snapshot-value" id="generated-at">—</span></div>
-            <div class="snapshot-row"><span
-                class="snapshot-label">Received</span><span
-                class="snapshot-value" id="received-at">—</span></div>
-            <div class="snapshot-row"><span
-                class="snapshot-label">Source</span><span class="snapshot-value"
-                id="source-name">Santosh AI</span></div>
-            <div class="snapshot-row"><span class="snapshot-label">Latest
-                date</span><span class="snapshot-value"
-                id="latest-date">—</span></div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><div><div class="panel-title">Auto
-                  refresh</div><div class="panel-sub">Next snapshot
-                  check</div></div><div class="mini-badge">5 sec</div></div>
-            <div class="progress-shell"><div class="progress-bar"
-                id="poll-progress"></div></div>
-            <div class="progress-meta"><span>Live polling enabled</span><span
-                id="poll-countdown">5s</span></div>
-          </div>
-        </div>
-      </section>
+                const latest = data && data.latest_date ? new Date(data.latest_date) : new Date();
+                const year = !isNaN(latest) ? latest.getFullYear() : new Date().getFullYear();
+                d = new Date(raw + " " + year);
+                return isNaN(d) ? null : d;
+            }
 
-      <footer class="footer"><span>SAI Dashboard · Santosh
-          AI</span><span>Cloudflare Worker snapshot endpoint</span></footer>
-    </div>
-    <div class="toast" id="toast"></div>
-    <script>
-const SOURCE='/receive?name=sales';
-const POLL_MS=10000;
-const STALE_MINUTES=45;
-const nf=new Intl.NumberFormat('en-IN');
-let lastData=null,pollStartedAt=Date.now(),toastTimer=null;
+            function aggregateDaily(daily, mode, data) {
+                const map = new Map();
 
-function money(value){const n=Number(value)||0;if(Math.abs(n)>=1e7)return(n/1e7).toFixed(2)+' Cr';if(Math.abs(n)>=1e5)return(n/1e5).toFixed(2)+' L';return nf.format(Math.round(n));}
-function showToast(text,kind=''){const t=document.getElementById('toast');t.textContent=text;t.className='toast show'+(kind?' '+kind:'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className='toast',2600);}
-function setStatus(kind,text){document.getElementById('status').className='status '+(kind||'');document.getElementById('status-text').textContent=text;}
-function fillTable(id,rows){const table=document.getElementById(id);table.innerHTML='';(rows||[]).slice(0,8).forEach((row,index)=>{const tr=table.insertRow();const c1=tr.insertCell();const rank=document.createElement('span');rank.className='rank';rank.textContent=index+1;c1.appendChild(rank);c1.appendChild(document.createTextNode(row.name||'—'));const c2=tr.insertCell();c2.className='n';c2.textContent=money(row.amount);});if(!table.rows.length){const cell=table.insertRow().insertCell();cell.colSpan=2;cell.textContent='No data';cell.style.color='#5f7188';cell.style.padding='14px 0';}}
+                (daily || []).forEach((p) => {
+                    const d = pointDate(p.date, data);
+                    if (!d) return;
+                    const amount = Number(p.amount) || 0;
+                    let key, label;
 
-function clearCanvas(){const canvas=document.getElementById('trend-chart'),ctx=canvas.getContext('2d'),rect=canvas.getBoundingClientRect(),dpr=window.devicePixelRatio||1;canvas.width=Math.max(1,Math.floor(rect.width*dpr));canvas.height=Math.max(1,Math.floor(rect.height*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,rect.width,rect.height);return{ctx,width:rect.width,height:rect.height};}
-function drawTrend(daily){const points=daily||[];document.getElementById('trend-count').textContent=points.length+(points.length===1?' day':' days');document.getElementById('axis-from').textContent=points.length?points[0].date:'—';document.getElementById('axis-to').textContent=points.length?points[points.length-1].date:'—';const{ctx,width,height}=clearCanvas();if(!points.length||width<10||height<10)return;const pad={left:18,right:18,top:22,bottom:24},innerW=width-pad.left-pad.right,innerH=height-pad.top-pad.bottom,values=points.map(p=>Number(p.amount)||0),max=Math.max(...values,1),min=Math.min(...values,0),range=Math.max(1,max-min);const coords=points.map((p,i)=>({x:pad.left+(points.length===1?innerW/2:i*innerW/(points.length-1)),y:pad.top+innerH-((values[i]-min)/range)*innerH}));const fill=ctx.createLinearGradient(0,pad.top,0,height);fill.addColorStop(0,'rgba(239,68,68,.30)');fill.addColorStop(1,'rgba(239,68,68,0)');ctx.beginPath();ctx.moveTo(coords[0].x,height-pad.bottom);coords.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(coords[coords.length-1].x,height-pad.bottom);ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.beginPath();coords.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.lineWidth=2.2;ctx.strokeStyle='#ef4444';ctx.shadowColor='rgba(239,68,68,.35)';ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;coords.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3.2,0,Math.PI*2);ctx.fillStyle='#fb7185';ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#0b1120';ctx.stroke();});}
+                    if (mode === "month") {
+                        key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+                        label = d.toLocaleDateString(undefined, { month: "short", year: "numeric" });
+                    } else {
+                        key = String(d.getFullYear());
+                        label = key;
+                    }
 
-function render(data){lastData=data;const k=data.kpis||{};document.getElementById('amount').textContent=money(k.sales_amount);document.getElementById('qty').textContent=nf.format(Math.round(k.sales_quantity||0));document.getElementById('lines').textContent=nf.format(k.line_items||0);document.getElementById('customers').textContent=nf.format(k.customers||0);document.getElementById('period').textContent=(data.period||'Current period')+(data.latest_date?' · to '+data.latest_date:'');drawTrend((data.series||{}).daily);const top=data.top||{};fillTable('top-customers',top.customers);fillTable('top-materials',top.materials);fillTable('top-plants',top.plants);document.getElementById('note').textContent=data.note||'Snapshot received successfully.';const generated=data.generated_at?new Date(data.generated_at):null,received=data.received_at?new Date(data.received_at):null;document.getElementById('generated-at').textContent=generated&&!isNaN(generated)?generated.toLocaleString():'—';document.getElementById('received-at').textContent=received&&!isNaN(received)?received.toLocaleString():'—';document.getElementById('source-name').textContent=data.source||'Santosh AI';document.getElementById('latest-date').textContent=data.latest_date||'—';const stamp=new Date(data.generated_at||data.received_at||Date.now()),age=(Date.now()-stamp.getTime())/60000,shown=stamp.toLocaleString();age>STALE_MINUTES?setStatus('stale','Stale · '+shown+' · '+Math.round(age)+' min ago'):setStatus('','Live · updated '+shown);}
-function clearDashboard(){lastData=null;['amount','qty','lines','customers'].forEach(id=>document.getElementById(id).textContent='—');document.getElementById('period').textContent='—';document.getElementById('note').textContent='Waiting for a new snapshot…';document.getElementById('generated-at').textContent='—';document.getElementById('received-at').textContent='—';document.getElementById('latest-date').textContent='—';document.getElementById('source-name').textContent='Santosh AI';fillTable('top-customers',[]);fillTable('top-materials',[]);fillTable('top-plants',[]);drawTrend([]);}
-async function refreshPage(showMessage=true){const b=document.getElementById('refresh-btn');b.disabled=true;b.textContent='Refreshing…';try{await poll();if(showMessage)showToast('Dashboard refreshed','success');}finally{b.disabled=false;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7L20 14"/><path d="M20 5v6h-6"/></svg>Refresh';}}
-async function deleteSnapshot(){if(!confirm('Delete the current sales snapshot? This cannot be undone.'))return;const token=prompt('Enter SAI_DASHBOARD_TOKEN to confirm deletion:');if(token===null)return;if(!token.trim()){showToast('Token is required','error');return;}const b=document.getElementById('delete-btn');b.disabled=true;b.textContent='Deleting…';try{const response=await fetch(SOURCE+'&t='+Date.now(),{method:'DELETE',cache:'no-store',headers:{'X-SAI-DASHBOARD-Token':token.trim()}});let result={};try{result=await response.json()}catch(_){ }if(response.status===401)throw new Error('Wrong SAI_DASHBOARD_TOKEN');if(!response.ok)throw new Error(result.error||('HTTP '+response.status));clearDashboard();setStatus('stale',result.deleted?'Snapshot deleted':'No snapshot existed');showToast(result.deleted?'Snapshot deleted':'No snapshot existed','success');}catch(error){showToast('Delete failed: '+error.message,'error');}finally{b.disabled=false;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg>Delete snapshot';}}
-async function poll(){pollStartedAt=Date.now();try{const response=await fetch(SOURCE+'&t='+Date.now(),{cache:'no-store'});if(response.status===404){clearDashboard();setStatus('stale','Waiting for the first snapshot from Santosh AI');return;}if(!response.ok)throw new Error('HTTP '+response.status);render(await response.json());}catch(error){setStatus('down','Cannot reach snapshot · '+error.message);}}
-function updatePollingUI(){const elapsed=(Date.now()-pollStartedAt)%POLL_MS,remaining=Math.max(0,POLL_MS-elapsed),pct=Math.min(100,(elapsed/POLL_MS)*100);document.getElementById('poll-progress').style.width=pct+'%';document.getElementById('poll-countdown').textContent=Math.ceil(remaining/1000)+'s';document.getElementById('refresh-meta').textContent='Next refresh in '+Math.ceil(remaining/1000)+'s';}
-document.getElementById('refresh-btn').addEventListener('click',()=>refreshPage(true));document.getElementById('delete-btn').addEventListener('click',deleteSnapshot);window.addEventListener('resize',()=>{if(lastData)drawTrend((lastData.series||{}).daily);});poll();setInterval(poll,POLL_MS);setInterval(updatePollingUI,250);updatePollingUI();
-</script>
-  </body>
+                    const old = map.get(key) || { date: label, amount: 0, sort: d.getTime() };
+                    old.amount += amount;
+                    old.sort = Math.min(old.sort, d.getTime());
+                    map.set(key, old);
+                });
+
+                return [...map.values()].sort((a, b) => a.sort - b.sort).map(({ date, amount }) => ({ date, amount }));
+            }
+
+            function trendPoints(data, mode) {
+                const s = (data && data.series) || {};
+
+                if (mode === "day") return Array.isArray(s.daily) ? s.daily : [];
+                if (mode === "month" && Array.isArray(s.monthly) && s.monthly.length) return s.monthly;
+                if (mode === "year" && Array.isArray(s.yearly) && s.yearly.length) return s.yearly;
+
+                return aggregateDaily(Array.isArray(s.daily) ? s.daily : [], mode, data);
+            }
+
+            function trendLabels(mode) {
+                if (mode === "month")
+                    return { title: "Monthly sales trend", sub: "Sales grouped by month", unit: "months" };
+                if (mode === "year")
+                    return { title: "Yearly sales trend", sub: "Sales grouped by year", unit: "years" };
+                return { title: "Daily sales trend", sub: "Sales movement by day", unit: "days" };
+            }
+
+            function drawTrend(points, mode = trendMode) {
+                points = points || [];
+                const labels = trendLabels(mode);
+
+                document.getElementById("trend-title").textContent = labels.title;
+                document.getElementById("trend-subtitle").textContent = labels.sub;
+                document.getElementById("trend-count").textContent = points.length + " " + labels.unit;
+                document.getElementById("axis-from").textContent = points.length ? points[0].date : "—";
+                document.getElementById("axis-to").textContent = points.length ? points[points.length - 1].date : "—";
+
+                const values = points.map((p) => Number(p.amount) || 0);
+                const total = values.reduce((a, b) => a + b, 0);
+                const avg = values.length ? total / values.length : 0;
+                const high = values.length ? Math.max(...values) : 0;
+
+                document.getElementById("trend-total").textContent = points.length ? money(total) : "—";
+                document.getElementById("trend-average").textContent = points.length ? money(avg) : "—";
+                document.getElementById("trend-highest").textContent = points.length ? money(high) : "—";
+                document.getElementById("trend-periods").textContent = points.length ? nf.format(points.length) : "—";
+
+                const { canvas, ctx, width, height } = clearCanvas();
+                trendHitPoints = [];
+                if (!points.length || width < 10 || height < 10) return;
+
+                const pad = { left: 20, right: 20, top: 24, bottom: 26 };
+                const innerW = width - pad.left - pad.right;
+                const innerH = height - pad.top - pad.bottom;
+                const max = Math.max(...values, 1);
+                const min = Math.min(...values, 0);
+                const range = Math.max(1, max - min);
+
+                const coords = points.map((p, i) => ({
+                    x: pad.left + (points.length === 1 ? innerW / 2 : (i * innerW) / (points.length - 1)),
+                    y: pad.top + innerH - ((values[i] - min) / range) * innerH,
+                    amount: values[i],
+                    label: p.date,
+                }));
+                trendHitPoints = coords;
+
+                const fill = ctx.createLinearGradient(0, pad.top, 0, height);
+                fill.addColorStop(0, "rgba(239,68,68,.32)");
+                fill.addColorStop(0.65, "rgba(239,68,68,.08)");
+                fill.addColorStop(1, "rgba(239,68,68,0)");
+
+                ctx.beginPath();
+                ctx.moveTo(coords[0].x, height - pad.bottom);
+                coords.forEach((p) => ctx.lineTo(p.x, p.y));
+                ctx.lineTo(coords[coords.length - 1].x, height - pad.bottom);
+                ctx.closePath();
+                ctx.fillStyle = fill;
+                ctx.fill();
+
+                ctx.beginPath();
+                coords.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
+                ctx.lineWidth = 2.4;
+                ctx.strokeStyle = "#ef4444";
+                ctx.shadowColor = "rgba(239,68,68,.38)";
+                ctx.shadowBlur = 14;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                coords.forEach((p, i) => {
+                    const showDot = coords.length <= 32 || i === 0 || i === coords.length - 1;
+                    if (!showDot) return;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3.4, 0, Math.PI * 2);
+                    ctx.fillStyle = "#fb7185";
+                    ctx.fill();
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = "#0b1120";
+                    ctx.stroke();
+                });
+
+                canvas.onmousemove = (e) => {
+                    if (!trendHitPoints.length) return;
+                    const rect = canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    let nearest = trendHitPoints[0];
+                    let dist = Math.abs(x - nearest.x);
+                    for (const p of trendHitPoints) {
+                        const d = Math.abs(x - p.x);
+                        if (d < dist) {
+                            dist = d;
+                            nearest = p;
+                        }
+                    }
+
+                    const tip = document.getElementById("chart-tooltip");
+                    tip.querySelector("strong").textContent = nearest.label;
+                    tip.querySelector("span").textContent = money(nearest.amount);
+                    tip.style.left = nearest.x + "px";
+                    tip.style.top = nearest.y + "px";
+                    tip.classList.add("show");
+                };
+
+                canvas.onmouseleave = () => document.getElementById("chart-tooltip").classList.remove("show");
+            }
+
+            function drawCurrentTrend() {
+                if (!lastData) {
+                    drawTrend([], trendMode);
+                    return;
+                }
+                drawTrend(trendPoints(lastData, trendMode), trendMode);
+            }
+
+            function render(data) {
+                lastData = data;
+                const k = data.kpis || {};
+                document.getElementById("amount").textContent = money(k.sales_amount);
+                document.getElementById("qty").textContent = nf.format(Math.round(k.sales_quantity || 0));
+                document.getElementById("lines").textContent = nf.format(k.line_items || 0);
+                document.getElementById("customers").textContent = nf.format(k.customers || 0);
+                document.getElementById("period").textContent =
+                    (data.period || "Current period") + (data.latest_date ? " · to " + data.latest_date : "");
+                drawCurrentTrend();
+                const top = data.top || {};
+                fillTable("top-customers", top.customers);
+                fillTable("top-materials", top.materials);
+                fillTable("top-plants", top.plants);
+                document.getElementById("note").textContent = data.note || "Snapshot received successfully.";
+                const generated = data.generated_at ? new Date(data.generated_at) : null,
+                    received = data.received_at ? new Date(data.received_at) : null;
+                document.getElementById("generated-at").textContent =
+                    generated && !isNaN(generated) ? generated.toLocaleString() : "—";
+                document.getElementById("received-at").textContent =
+                    received && !isNaN(received) ? received.toLocaleString() : "—";
+                document.getElementById("source-name").textContent = data.source || "Santosh AI";
+                document.getElementById("latest-date").textContent = data.latest_date || "—";
+                const stamp = new Date(data.generated_at || data.received_at || Date.now()),
+                    age = (Date.now() - stamp.getTime()) / 60000,
+                    shown = stamp.toLocaleString();
+                age > STALE_MINUTES
+                    ? setStatus("stale", "Stale · " + shown + " · " + Math.round(age) + " min ago")
+                    : setStatus("", "Live · updated " + shown);
+            }
+            function clearDashboard() {
+                lastData = null;
+                ["amount", "qty", "lines", "customers"].forEach(
+                    (id) => (document.getElementById(id).textContent = "—")
+                );
+                document.getElementById("period").textContent = "—";
+                document.getElementById("note").textContent = "Waiting for a new snapshot…";
+                document.getElementById("generated-at").textContent = "—";
+                document.getElementById("received-at").textContent = "—";
+                document.getElementById("latest-date").textContent = "—";
+                document.getElementById("source-name").textContent = "Santosh AI";
+                fillTable("top-customers", []);
+                fillTable("top-materials", []);
+                fillTable("top-plants", []);
+                drawCurrentTrend();
+            }
+            async function refreshPage(showMessage = true) {
+                const b = document.getElementById("refresh-btn");
+                b.disabled = true;
+                b.textContent = "Refreshing…";
+                try {
+                    await poll();
+                    if (showMessage) showToast("Dashboard refreshed", "success");
+                } finally {
+                    b.disabled = false;
+                    b.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7L20 14"/><path d="M20 5v6h-6"/></svg>Refresh';
+                }
+            }
+            async function deleteSnapshot() {
+                if (!confirm("Delete the current sales snapshot? This cannot be undone.")) return;
+                const token = prompt("Enter SAI_DASHBOARD_TOKEN to confirm deletion:");
+                if (token === null) return;
+                if (!token.trim()) {
+                    showToast("Token is required", "error");
+                    return;
+                }
+                const b = document.getElementById("delete-btn");
+                b.disabled = true;
+                b.textContent = "Deleting…";
+                try {
+                    const response = await fetch(SOURCE + "&t=" + Date.now(), {
+                        method: "DELETE",
+                        cache: "no-store",
+                        headers: { "X-SAI-DASHBOARD-Token": token.trim() },
+                    });
+                    let result = {};
+                    try {
+                        result = await response.json();
+                    } catch (_) {}
+                    if (response.status === 401) throw new Error("Wrong SAI_DASHBOARD_TOKEN");
+                    if (!response.ok) throw new Error(result.error || "HTTP " + response.status);
+                    clearDashboard();
+                    setStatus("stale", result.deleted ? "Snapshot deleted" : "No snapshot existed");
+                    showToast(result.deleted ? "Snapshot deleted" : "No snapshot existed", "success");
+                } catch (error) {
+                    showToast("Delete failed: " + error.message, "error");
+                } finally {
+                    b.disabled = false;
+                    b.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg>Delete snapshot';
+                }
+            }
+            async function poll() {
+                pollStartedAt = Date.now();
+                try {
+                    const response = await fetch(SOURCE + "&t=" + Date.now(), { cache: "no-store" });
+                    if (response.status === 404) {
+                        clearDashboard();
+                        setStatus("stale", "Waiting for the first snapshot from Santosh AI");
+                        return;
+                    }
+                    if (!response.ok) throw new Error("HTTP " + response.status);
+                    render(await response.json());
+                } catch (error) {
+                    setStatus("down", "Cannot reach snapshot · " + error.message);
+                }
+            }
+            function updatePollingUI() {
+                const elapsed = (Date.now() - pollStartedAt) % POLL_MS,
+                    remaining = Math.max(0, POLL_MS - elapsed),
+                    pct = Math.min(100, (elapsed / POLL_MS) * 100);
+                document.getElementById("poll-progress").style.width = pct + "%";
+                document.getElementById("poll-countdown").textContent = Math.ceil(remaining / 1000) + "s";
+                document.getElementById("refresh-meta").textContent =
+                    "Next refresh in " + Math.ceil(remaining / 1000) + "s";
+            }
+            document.getElementById("refresh-btn").addEventListener("click", () => refreshPage(true));
+            document.getElementById("delete-btn").addEventListener("click", deleteSnapshot);
+
+            document.querySelectorAll(".trend-btn").forEach((button) => {
+                button.addEventListener("click", () => {
+                    trendMode = button.dataset.trend;
+                    document.querySelectorAll(".trend-btn").forEach((b) => b.classList.toggle("active", b === button));
+                    drawCurrentTrend();
+                });
+            });
+
+            window.addEventListener("resize", () => drawCurrentTrend());
+
+            poll();
+            setInterval(poll, POLL_MS);
+            setInterval(updatePollingUI, 250);
+            updatePollingUI();
+        </script>
+    </body>
 </html>
