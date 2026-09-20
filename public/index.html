@@ -170,7 +170,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background-ima
     <div class="toast" id="toast"></div>
     <script>
 const SOURCE='/receive?name=sales';
-const POLL_MS=5000;
+const POLL_MS=10000;
 const STALE_MINUTES=45;
 const nf=new Intl.NumberFormat('en-IN');
 let lastData=null,pollStartedAt=Date.now(),toastTimer=null;
