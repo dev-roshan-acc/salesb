@@ -1,0 +1,113 @@
+@media (max-width: 1120px) {
+  .analytics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .analytics-grid .analytics-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-grid .analytics-card:last-child {
+    grid-column: auto;
+  }
+
+  .donut-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .donut-chart {
+    width: 170px;
+  }
+
+  body {
+    padding: 14px;
+  }
+
+  .topbar {
+    top: 10px;
+    padding: 14px;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .live-state {
+    align-items: flex-start;
+  }
+
+  .kpi-grid,
+  .ranking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-head--responsive {
+    flex-wrap: wrap;
+  }
+
+  .trend-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .trend-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .trend-chart-shell {
+    height: 250px;
+  }
+
+  .footer {
+    display: grid;
+  }
+}
+
+@media (max-width: 430px) {
+  .brand-title {
+    font-size: 17px;
+  }
+
+  .button {
+    padding-inline: 11px;
+  }
+
+  .trend-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    display: grid;
+  }
+}
